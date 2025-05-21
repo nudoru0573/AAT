@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ユーザー登録</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        label, select, input { display: block; margin-top: 10px; }
+        button { margin-top: 20px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>ユーザー登録フォーム</h1>
+    <form id="registerForm">
+        <label>ユーザー名:
+            <input type="text" name="username" required>
+        </label>
+        <label>パスワード:
+            <input type="password" name="password" required>
+        </label>
+        <label>コース選択:
+            <select name="courseSelection" required>
+                <option value="高度応用情報">高度応用情報</option>
+                <option value="情報工">情報工</option>
+            </select>
+        </label>
+        <button type="submit">登録</button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = {
+                username: formData.get('username'),
+                password: formData.get('password'),
+                courseSelection: formData.get('courseSelection')
+            };
+
+            const response = await fetch('http://localhost:8080/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const resultText = await response.text();
+            document.getElementById('result').textContent = resultText;
+        });
+    </script>
+</body>
+</html>
